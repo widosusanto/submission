@@ -1,9 +1,10 @@
-?php
+<?php
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
+use App\Models\Status;
 use App\Models\Submission;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -12,7 +13,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $submissions = Submission::latest()->get();
+        $cardvalue = [
+          'pending' => Submission::where('status_id', Status::PENDING['id'])->count(),
+          'total' => Submission::count(),
+        ];
+        $recenthistories = History::latest()->limit(2)->get();
+
+        return view('home', [
+          'records' => $submissions,
+          'cardvalue' => $cardvalue,
+          'recenthistories' => $recenthistories,
+        ]);
     }
 
 }
