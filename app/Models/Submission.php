@@ -11,6 +11,8 @@ class Submission extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['type', 'attachment'];
+
     public function submitter(): BelongsTo
     {
       return $this->belongsTo(User::class, 'user_id');
@@ -26,4 +28,3 @@ class Submission extends Model
       return $this->hasMany(History::class);
     }
 }
-
